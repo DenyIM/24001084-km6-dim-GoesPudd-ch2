@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">AND_KM 6_Deny Iqbal Mubarok_Challenge Chapter2</string>
+    <string name="app_name">AND_KM 6_Deny Iqbal Mubarok_Challenge Chapter 2</string>
+    <string name="text_username_home">Hai, Deni!</string>
+    <string name="text_question_home">Hari ini kamu mau makan apa?</string>
+    <string name="text_tittle_banner">ALL FAST FOOD DISCOUNT UP TO 50%</string>
+    <string name="text_description_banner">Discount tersedia hanya untuk pengguna yang memiliki Ticket. Ayo cepat claim Ticket sekarang juga!!!</string>
+    <string name="text_header_list_menu">List Menu Makanan</string>
+    <string name="text_rupiah">Rp.</string>
 </resources>
