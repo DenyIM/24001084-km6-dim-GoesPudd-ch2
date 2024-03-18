@@ -1,8 +1,9 @@
-package com.example.and_km6_denyiqbalmubarok_challengechapter2
+package com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.main
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.R
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.ActivityMainBinding
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.CategoryAdapter
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.MenuAdapter
