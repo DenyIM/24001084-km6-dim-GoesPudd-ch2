@@ -24,5 +24,7 @@
         <item name="fontFamily">@font/poppins_font</item>
     </style>
 
-    <style name="Theme.AND_KM6_DenyIqbalMubarok_ChallengeChapter2" parent="Base.Theme.AND_KM6_DenyIqbalMubarok_ChallengeChapter2" />
+    <style name="Theme.AND_KM6_DenyIqbalMubarok_ChallengeChapter2" parent="Base.Theme.AND_KM6_DenyIqbalMubarok_ChallengeChapter2">
+        <item name="android:windowBackground">@drawable/bg_home</item>
+    </style>
 </resources>
