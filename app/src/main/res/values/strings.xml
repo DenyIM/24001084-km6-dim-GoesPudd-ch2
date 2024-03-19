@@ -6,4 +6,6 @@
     <string name="text_description_banner">Discount tersedia hanya untuk pengguna yang memiliki Ticket. Ayo cepat claim Ticket sekarang juga!!!</string>
     <string name="text_header_list_menu">List Menu Makanan</string>
     <string name="text_rupiah">Rp.</string>
+    <string name="text_order_cart">Tambah ke Keranjang - Rp.</string>
+    <string name="text_location">Lokasi</string>
 </resources>

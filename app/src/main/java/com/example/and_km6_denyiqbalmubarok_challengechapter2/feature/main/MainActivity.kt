@@ -3,12 +3,15 @@ package com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.main
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.R
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.ActivityMainBinding
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.CategoryAdapter
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.MenuAdapter
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.detail.DetailMenuActivity
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.Category
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.Menu
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.MenuDetail
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -24,6 +27,19 @@ class MainActivity : AppCompatActivity() {
         setAction()
         setListCategory()
         setListMenu()
+    }
+
+    private fun navigateToDetailMenu() {
+        DetailMenuActivity.startActivity(
+            this, MenuDetail(
+                R.drawable.img_grilled_chicken,
+                "Ayam Bakar",
+                "Varian Ayam Bakar Khas Mail",
+                "Jl. Imogiri Tim. No.Km. 07, Botokenceng, Wirokerten, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55194",
+                50000.0
+            )
+        )
+        Toast.makeText(this, "Navigate to Profile", Toast.LENGTH_SHORT).show()
     }
 
     private fun setListMenu() {
@@ -65,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setAction() {
         binding.layoutHeader.ivProfileMenu.setOnClickListener {
+            navigateToDetailMenu()
             Toast.makeText(this@MainActivity, "Anda masuk ke menu Profile", Toast.LENGTH_SHORT).show()
         }
         binding.layoutHeader.ivCartMenu.setOnClickListener {
