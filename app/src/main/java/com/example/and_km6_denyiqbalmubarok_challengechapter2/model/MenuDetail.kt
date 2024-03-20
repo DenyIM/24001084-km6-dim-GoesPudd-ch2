@@ -12,5 +12,6 @@ data class MenuDetail(
     var name: String,
     var desc: String,
     var shopLoc: String,
-    var price: Double
+    var price: Double,
+    var mapsLoc: String
 ): Parcelable
