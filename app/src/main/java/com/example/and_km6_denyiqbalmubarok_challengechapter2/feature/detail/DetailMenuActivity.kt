@@ -2,7 +2,10 @@ package com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.detail
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.ActivityDetailMenuBinding
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.LayoutBtnOrderMenuBinding
@@ -19,12 +22,6 @@ class DetailMenuActivity : AppCompatActivity() {
 
     companion object{
         const val EXTRAS_DETAIL_DATA = "EXTRAS_DETAIL_DATA"
-
-        fun startActivity(context: Context, menu: MenuDetail) {
-            val intent = Intent(context, DetailMenuActivity::class.java)
-            intent.putExtra("EXTRAS_DETAIL_DATA", menu)
-            context.startActivity(intent)
-        }
     }
 
     private val binding: ActivityDetailMenuBinding by lazy {
@@ -51,6 +48,18 @@ class DetailMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         getIntentData()
+        setBackButton()
+    }
+
+    private fun setBackButton() {
+        binding.ibBackToHome.setOnClickListener {
+            Toast.makeText(this, "Tombol Back ditekan", Toast.LENGTH_SHORT).show()
+            onBackPressed()
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     private fun getIntentData() {
@@ -58,6 +67,18 @@ class DetailMenuActivity : AppCompatActivity() {
             setProfileImage(it.image)
             setProfileData(it.name, it.desc, it.shopLoc, it.price)
             setCounterOrder(it.price)
+            openLocation(it.mapsLoc)
+        }
+    }
+
+    private fun openLocation(urlMaps: String) {
+        detailLocShopMenuBinding.tvDetailDescMenu.setOnClickListener {
+            if (detailLocShopMenuBinding.tvDetailDescMenu.text.isNotEmpty()){
+                val uri = Uri.parse(urlMaps)
+                intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.google.android.apps.maps")
+                startActivity(intent)
+            }
         }
     }
 

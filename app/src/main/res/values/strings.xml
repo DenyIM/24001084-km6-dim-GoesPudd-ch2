@@ -8,4 +8,8 @@
     <string name="text_rupiah">Rp.</string>
     <string name="text_order_cart">Tambah ke Keranjang - Rp.</string>
     <string name="text_location">Lokasi</string>
+    <string name="text_grid_mode">Grid Mode</string>
+    <string name="text_list_mode">List Mode</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

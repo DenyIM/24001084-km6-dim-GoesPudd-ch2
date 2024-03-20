@@ -1,87 +1,54 @@
 package com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.R
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.ActivityMainBinding
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.CategoryAdapter
-import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.MenuAdapter
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.data.datasource.MenuDataSource
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.changelayoutmenu.MenuAdapter
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.data.datasource.MenuDataSourceImpl
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.databinding.LayoutHeaderMenuBinding
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.adapter.changelayoutmenu.OnItemClickedListener
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.data.datasource.CategoryDataSource
+import com.example.and_km6_denyiqbalmubarok_challengechapter2.data.datasource.CategoryDataSourceImpl
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.feature.detail.DetailMenuActivity
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.Category
-import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.Menu
 import com.example.and_km6_denyiqbalmubarok_challengechapter2.model.MenuDetail
 
 class MainActivity : AppCompatActivity() {
+    private var menuAdapter: MenuAdapter? = null
+    private val categoryAdapter = CategoryAdapter()
+    private val menuDataSource: MenuDataSource by lazy { MenuDataSourceImpl() }
+    private val categoryDataSource: CategoryDataSource by lazy { CategoryDataSourceImpl() }
+    private var isUsingGridMode: Boolean = true
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+    private val headerMenuBinding: LayoutHeaderMenuBinding by lazy {
+        LayoutHeaderMenuBinding.bind(binding.layoutHeaderMenu.root)
+    }
 
-    private val adapterCategory = CategoryAdapter()
-    private val adapterMenu = MenuAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setAction()
         setListCategory()
-        setListMenu()
-    }
+        setListMenu(isUsingGridMode)
+        setAction()
 
-    private fun navigateToDetailMenu() {
-        DetailMenuActivity.startActivity(
-            this, MenuDetail(
-                R.drawable.img_grilled_chicken,
-                "Ayam Bakar",
-                "Varian Ayam Bakar Khas Mail",
-                "Jl. Imogiri Tim. No.Km. 07, Botokenceng, Wirokerten, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55194",
-                50000.0
-            )
-        )
-        Toast.makeText(this, "Navigate to Profile", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setListMenu() {
-        val data = listOf(
-            Menu(image = R.drawable.img_grilled_chicken, name = "Ayam Bakar", price = 50000.0),
-            Menu(image = R.drawable.img_fried_chicken, name = "Ayam Goreng", price = 40000.0),
-            Menu(image = R.drawable.img_geprek_chicken, name = "Ayam Geprek", price = 40000.0),
-            Menu(image = R.drawable.img_satay_chicken, name = "Sate Usus Ayam", price = 10000.0),
-            Menu(image = R.drawable.img_padang_rice, name = "Nasi Padang", price = 30000.0),
-            Menu(image = R.drawable.img_fried_rice, name = "Nasi Goreng", price = 20000.0),
-            Menu(image = R.drawable.img_chicken_noodle, name = "Mie Ayam", price = 15000.0),
-            Menu(image = R.drawable.img_fried_duck, name = "Bebek Goreng", price = 50000.0),
-            Menu(image = R.drawable.img_rendang, name = "Rendang", price = 50000.0),
-            Menu(image = R.drawable.img_siomay, name = "Siomay", price = 25000.0)
-        )
-        binding.rvMenu.apply {
-            adapter = this@MainActivity.adapterMenu
-        }
-        adapterMenu.submitData(data)
-    }
-
-    private fun setListCategory() {
-        val data = listOf(
-            Category(image = R.drawable.img_rice, name = "Nasi"),
-            Category(image = R.drawable.img_noddle, name = "Mie"),
-            Category(image = R.drawable.img_snack, name = "Snack"),
-            Category(image = R.drawable.img_drink, name = "Minuman"),
-            Category(image = R.drawable.img_junkfood, name = "Junk Food"),
-            Category(image = R.drawable.img_chicken_meat, name = "Daging Ayam"),
-            Category(image = R.drawable.img_beef, name = "Daging Sapi"),
-            Category(image = R.drawable.img_duck_meat, name = "Daging Bebek")
-
-        )
-        binding.rvCategory.apply {
-            adapter = this@MainActivity.adapterCategory
-        }
-        adapterCategory.submitData(data)
     }
 
     private fun setAction() {
+        headerMenuBinding.ivLogoListMenu.setOnClickListener {
+            isUsingGridMode = !isUsingGridMode
+            setButtonImage(isUsingGridMode)
+            setListMenu(isUsingGridMode)
+        }
         binding.layoutHeader.ivProfileMenu.setOnClickListener {
-            navigateToDetailMenu()
             Toast.makeText(this@MainActivity, "Anda masuk ke menu Profile", Toast.LENGTH_SHORT).show()
         }
         binding.layoutHeader.ivCartMenu.setOnClickListener {
@@ -99,5 +66,39 @@ class MainActivity : AppCompatActivity() {
         binding.layoutBanner.ivLogoBanner.setOnClickListener {
             Toast.makeText(this@MainActivity, "Silahkan Claim Ticket Anda!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun setListMenu(isUsingGrid: Boolean) {
+        val listMode = if (isUsingGrid) MenuAdapter.MODE_GRID else MenuAdapter.MODE_LIST
+        menuAdapter = MenuAdapter(
+            listMode = listMode,
+            listener = object : OnItemClickedListener<MenuDetail> {
+                override fun onItemClicked(item: MenuDetail) {
+                    //navigate to detail
+                    navigateToDetailMenu(item)
+                }
+            })
+        binding.rvMenu.apply {
+            adapter = this@MainActivity.menuAdapter
+            layoutManager = GridLayoutManager(this@MainActivity, if (isUsingGrid) 2 else 1)
+        }
+        menuAdapter?.submitData(menuDataSource.getMenuDetailMembers())
+    }
+
+    private fun navigateToDetailMenu(item: MenuDetail) {
+        val intent = Intent(this, DetailMenuActivity::class.java)
+        intent.putExtra(DetailMenuActivity.EXTRAS_DETAIL_DATA, item)
+        startActivity(intent)
+    }
+
+    private fun setListCategory() {
+        binding.rvCategory.apply {
+            adapter = this@MainActivity.categoryAdapter
+        }
+        categoryAdapter.submitData(categoryDataSource.getCategoryMembers())
+    }
+
+    private fun setButtonImage(usingGridMode: Boolean) {
+        headerMenuBinding.ivLogoListMenu.setImageResource(if (usingGridMode) R.drawable.img_logo_list1 else R.drawable.img_logo_list2)
     }
 }
